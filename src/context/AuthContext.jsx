@@ -11,9 +11,16 @@ export function AuthProvider({ children }) {
     const token = localStorage.getItem('token');
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/users/profile`).then(res => setUser(res.data)).catch(() => localStorage.removeItem('token'));
+      axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/users/profile`)
+        .then(res => setUser(res.data))
+        .catch(() => {
+          localStorage.removeItem('token');
+          delete axios.defaults.headers.common['Authorization'];
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
   const login = async (email, password) => {
