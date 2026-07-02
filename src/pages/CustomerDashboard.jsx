@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 
 export default function CustomerDashboard() {
+  const { logout } = useAuth();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,9 +25,14 @@ export default function CustomerDashboard() {
 
   return (
     <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Customer Dashboard</h1>
-        <Link to="/place-order" className="bg-blue-600 text-white px-4 py-2 rounded">Place Order</Link>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div>
+          <h1 className="text-2xl font-bold">Customer Dashboard</h1>
+        </div>
+        <div className="flex gap-3">
+          <Link to="/place-order" className="bg-blue-600 text-white px-4 py-2 rounded">Place Order</Link>
+          <button onClick={logout} className="bg-slate-700 text-white px-4 py-2 rounded">Logout</button>
+        </div>
       </div>
 
       {loading ? (

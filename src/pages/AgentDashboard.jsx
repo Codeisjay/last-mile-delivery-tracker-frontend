@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 export default function AgentDashboard() {
+  const { logout } = useAuth();
   const [orders, setOrders] = useState([]);
   const [filterStatus, setFilterStatus] = useState('');
   const [error, setError] = useState('');
@@ -75,7 +77,10 @@ export default function AgentDashboard() {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Assigned Orders</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <h1 className="text-3xl font-bold">Assigned Orders</h1>
+        <button onClick={logout} className="bg-slate-700 text-white px-4 py-2 rounded">Logout</button>
+      </div>
       
       {error && <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</div>}
 

@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 export default function OrderDetailsPage() {
+  const { logout } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState(null);
@@ -60,12 +62,20 @@ export default function OrderDetailsPage() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <button 
-        onClick={() => navigate(-1)}
-        className="text-blue-600 hover:underline mb-4"
-      >
-        ← Back
-      </button>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+        <button 
+          onClick={() => navigate(-1)}
+          className="text-blue-600 hover:underline"
+        >
+          ← Back
+        </button>
+        <button
+          onClick={logout}
+          className="bg-slate-700 text-white px-4 py-2 rounded"
+        >
+          Logout
+        </button>
+      </div>
 
       {error && <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</div>}
 
